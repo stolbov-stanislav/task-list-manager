@@ -1,0 +1,7 @@
+button {
+  border: 1px solid black;
+  border-radius: 4px;
+}
+button:hover {
+  filter: hue-rotate(90deg);
+}
