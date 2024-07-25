@@ -1,9 +1,9 @@
 /**
- * @typedef {{id: string, isDone: boolean, label: string}} Task
+ * @typedef {{id: string, label: string}} List
  */
 
 /**
- * @typedef {{id: number, title: string, tasks: Array<Task>}} ListItem
+ * @typedef {{id: string, label: string, isDone: boolean, parentId: string}} Task
  */
 
 const articleStyle = {
@@ -58,15 +58,17 @@ const addTaskBtnStyle = {
 export default class TaskList {
   /**
    * 
-   * @param {ListItem} list
-   * @param {(itemId: string, value: string) => void} titleChangedCallback
-   * @param {(taskId: string, isChecked: boolean) => void} taskIsDoneChangedCallback
-   * @param {(taskId: string, value: string) => void} taskLabelChangedCallback
-   * @param {(taskId: string) => void} removingTaskCallback
+   * @param {List} list
+   * @param {Array<Task>} tasks
+   * @param {(id: string, value: string) => void} titleChangedCallback
+   * @param {(id: string, isChecked: boolean) => void} taskIsDoneChangedCallback
+   * @param {(id: string, value: string) => void} taskLabelChangedCallback
+   * @param {(id: string) => void} removingTaskCallback
    * @param {() => void} addingTaskCallback
    */
   constructor(
     list,
+    tasks,
     titleChangedCallback,
     taskIsDoneChangedCallback,
     taskLabelChangedCallback,
@@ -75,8 +77,8 @@ export default class TaskList {
   ) {
     this._article = document.createElement("article");
     this._article.appendChild(this._createTitle(list));
-    this._article.appendChild(this._createTaskCounter(list.tasks));
-    this._article.appendChild(this._createTaskList(list.tasks));
+    this._article.appendChild(this._createTaskCounter(tasks));
+    this._article.appendChild(this._createTaskList(tasks));
     this._article.appendChild(this._createAddTaskButton());
     Object.assign(this._article.style, articleStyle);
     this._titleChangedCallback = titleChangedCallback;
@@ -88,12 +90,12 @@ export default class TaskList {
 
   /**
    * 
-   * @param {ListItem} list 
+   * @param {List} list 
    */
-  _createTitle({id, title}) {
+  _createTitle({id, label}) {
     const input = document.createElement("input");
     input.type = "text";
-    input.value = title;
+    input.value = label;
     Object.assign(input.style, titleStyle);
     input.onchange = (e) => this._titleChangedCallback(id, e.target.value);
     return input;

@@ -36,13 +36,13 @@ export default class Nav {
 
   /**
    * 
-   * @param {Array<{id: number, title: string}>} data
+   * @param {Array<{id: string, label: string}>} lists
    * @param {(itemId: string) => void} listItemCallback
    * @param {(itemId: string) => void} removingListCallback
    * @param {(itemId: string) => void} addingListCallback
    */
-  constructor(data, listItemCallback, removingListCallback, addingListCallback) {
-    this._createTasksLists(data).forEach((list) => {
+  constructor(lists, listItemCallback, removingListCallback, addingListCallback) {
+    this._createTasksLists(lists).forEach((list) => {
       this._nav.appendChild(list);
     });
     this._nav.appendChild(this._createAddingButton());
@@ -83,11 +83,11 @@ export default class Nav {
 
   /**
    * 
-   * @param {string} title 
+   * @param {string} label 
    */
-  _createItemButton(title) {
+  _createItemButton(label) {
     const button = document.createElement("button");
-    button.textContent = title;
+    button.textContent = label;
     Object.assign(button.style, itemBtnStyle);
     return button;
   };
@@ -101,11 +101,11 @@ export default class Nav {
 
   /**
    * 
-   * @param {Array<{id: number, title: string}>} data 
+   * @param {Array<{id: string, label: string}>} lists 
    */
-  _createTasksLists(data) {
-    return data.map((list) => {
-      const itemBtn = this._createItemButton(list.title);
+  _createTasksLists(lists) {
+    return lists.map((list) => {
+      const itemBtn = this._createItemButton(list.label);
       itemBtn.onclick = () => {
         if (this._listItemClickedCallback) {
           this._listItemClickedCallback(list.id);
