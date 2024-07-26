@@ -1,10 +1,11 @@
 /**
- * @typedef {{id: string, label: string}} List
+ * @typedef {import('./storage.js').List} List
  */
 
 /**
- * @typedef {{id: string, label: string, isDone: boolean, parentId: string}} Task
+ * @typedef {import('./storage.js').Task} Task
  */
+
 
 const articleStyle = {
   display: "flex",
@@ -186,10 +187,18 @@ export default class TaskList {
    * @param {HTMLElement} element 
    */
   attachTo(element) {
-    if (this._elementToAttachTo) {
-      this._elementToAttachTo.removeChild(this._article);
-    }
-    this._elementToAttachTo = element;
     element.appendChild(this._article);
+  }
+
+  /**
+   * 
+   * @param {string} name 
+   */
+  detachByEvent(name) {
+    window.addEventListener(
+      name,
+      () => this._article.parentElement && this._article.parentElement.removeChild(this._article),
+      false,
+    );
   }
 }

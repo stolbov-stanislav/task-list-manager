@@ -1,5 +1,9 @@
 import { generateId } from "./utils.js"
 
+/**
+ * @typedef {import('./storage.js').List} List
+ */
+
 const navStyle = {
   display: "flex",
   flexDirection: "column",
@@ -36,7 +40,7 @@ export default class Nav {
 
   /**
    * 
-   * @param {Array<{id: string, label: string}>} lists
+   * @param {Array<List>} lists
    * @param {(itemId: string) => void} listItemCallback
    * @param {(itemId: string) => void} removingListCallback
    * @param {(itemId: string) => void} addingListCallback
@@ -101,7 +105,7 @@ export default class Nav {
 
   /**
    * 
-   * @param {Array<{id: string, label: string}>} lists 
+   * @param {Array<List>} lists 
    */
   _createTasksLists(lists) {
     return lists.map((list) => {
@@ -129,10 +133,18 @@ export default class Nav {
    * @param {HTMLElement} element 
    */
   attachTo(element) {
-    if (this._elementToAttachTo) {
-      this._elementToAttachTo.removeChild(this._nav);
-    }
-    this._elementToAttachTo = element;
     element.appendChild(this._nav);
+  }
+
+  /**
+   * 
+   * @param {string} name 
+   */
+  detachByEvent(name) {
+    window.addEventListener(
+      name,
+      () => this._nav.parentElement && this._nav.parentElement.removeChild(this._nav),
+      false,
+    );
   }
 }
