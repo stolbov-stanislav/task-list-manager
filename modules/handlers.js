@@ -49,3 +49,15 @@ export const onTaskLabelChanged = (id, value, storage, callback) => {
   window.dispatchEvent(rerenderEvent);
   callback();
 };
+
+/**
+ * 
+ * @param {string} id 
+ * @param {Storage} storage 
+ * @param {() => void} callback 
+ */
+export const onTaskRemoved = (id, storage, callback) => {
+  storage.removeItem(id);
+  window.dispatchEvent(rerenderEvent);
+  callback();
+};
