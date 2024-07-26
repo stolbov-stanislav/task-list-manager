@@ -81,3 +81,12 @@ export const onTaskAdded = (parentId, storage, callback) => {
   window.dispatchEvent(rerenderEvent);
   callback();
 };
+
+/**
+ * 
+ * @param {() => void} callback 
+ */
+export const onListClicked = (callback) => {
+  window.dispatchEvent(rerenderEvent);
+  callback();
+};

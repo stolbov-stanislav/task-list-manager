@@ -15,6 +15,7 @@ import {
   onTaskLabelChanged,
   onTaskRemoved,
   onTaskAdded,
+  onListClicked,
 } from "./modules/handlers.js";
 
 fillStorageWithInitialData();
@@ -26,7 +27,7 @@ fillStorageWithInitialData();
 const renderTaskListManager = (listId) => {
   const nav = new Nav(
     getAllListsFromStorage(),
-    (id) => console.log("list item clicked", id),
+    (id) => onListClicked(() => renderTaskListManager(id)),
     (id) => console.log("removing list", id),
     (id) => console.log("adding list", id),
   );
