@@ -2,6 +2,7 @@
  * @typedef {import('./storage.js').Storage} Storage
  */
 
+import { removeAllTasksFromStorageByParentId } from './storage.js';
 import { generateId } from './utils.js';
 
 const rerenderEvent = new Event("rerender");
@@ -87,6 +88,19 @@ export const onTaskAdded = (parentId, storage, callback) => {
  * @param {() => void} callback 
  */
 export const onListClicked = (callback) => {
+  window.dispatchEvent(rerenderEvent);
+  callback();
+};
+
+/**
+ * 
+ * @param {string} id 
+ * @param {Storage} storage 
+ * @param {() => void} callback 
+ */
+export const onListRemoved = (id, storage, callback) => {
+  storage.removeItem(id);
+  removeAllTasksFromStorageByParentId(id);
   window.dispatchEvent(rerenderEvent);
   callback();
 };

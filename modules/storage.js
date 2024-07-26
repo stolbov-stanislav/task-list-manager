@@ -92,3 +92,31 @@ export const getAllListsFromStorage = () => {
   }
   return lists;
 };
+
+/**
+ * 
+ * @param {string} parentId
+ */
+export const removeAllTasksFromStorageByParentId = (parentId) => {
+  const keys = Object.keys(storage);
+  for(const key of keys) {
+    const value = JSON.parse(storage.getItem(key));
+    value.parentId === parentId && storage.removeItem(key);
+  }
+};
+
+/**
+ * 
+ * @param {string} parentId
+ * @returns {string}
+ */
+export const getRandomListIdFromStorage = () => {
+  const keys = Object.keys(storage);
+  for(const key of keys) {
+    const value = JSON.parse(storage.getItem(key));
+    if (value.id && !value.parentId) {
+      return value.id;
+    }
+  }
+  throw new Error("List item not found in storage!");
+};

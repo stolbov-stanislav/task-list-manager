@@ -7,6 +7,7 @@ import {
   getItemById,
   getAllListsFromStorage,
   getTasksByParentIdFromStorage,
+  getRandomListIdFromStorage,
 } from "./modules/storage.js";
 import {
   rerenderEventType,
@@ -16,6 +17,7 @@ import {
   onTaskRemoved,
   onTaskAdded,
   onListClicked,
+  onListRemoved,
 } from "./modules/handlers.js";
 
 fillStorageWithInitialData();
@@ -28,7 +30,11 @@ const renderTaskListManager = (listId) => {
   const nav = new Nav(
     getAllListsFromStorage(),
     (id) => onListClicked(() => renderTaskListManager(id)),
-    (id) => console.log("removing list", id),
+    (id) => onListRemoved(
+      id,
+      storage,
+      () => renderTaskListManager(id === listId ? getRandomListIdFromStorage() : listId),
+    ),
     (id) => console.log("adding list", id),
   );
   nav.attachTo(document.querySelector("body"));
