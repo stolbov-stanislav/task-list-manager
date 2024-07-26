@@ -19,3 +19,18 @@ export const onTitleChanged = (id, value, storage, callback) => {
   window.dispatchEvent(rerenderEvent);
   callback();
 };
+
+/**
+ * 
+ * @param {string} id 
+ * @param {boolean} isChecked 
+ * @param {Storage} storage 
+ * @param {() => void} callback 
+ */
+export const onIsDoneChanged = (id, isChecked, storage, callback) => {
+  const task = JSON.parse(storage.getItem(id));
+  task.isDone = isChecked;
+  storage.setItem(id, JSON.stringify(task));
+  window.dispatchEvent(rerenderEvent);
+  callback();
+};
