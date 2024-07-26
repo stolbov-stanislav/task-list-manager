@@ -36,7 +36,7 @@ const renderTaskListManager = (listId) => {
       storage,
       () => renderTaskListManager(id === listId ? getRandomListIdFromStorage() : listId),
     ),
-    (id) => onListAdded(storage, () => renderTaskListManager(listId)),
+    () => onListAdded(storage, () => renderTaskListManager(listId)),
   );
   nav.attachTo(document.querySelector("body"));
   nav.detachByEvent(rerenderEventType);

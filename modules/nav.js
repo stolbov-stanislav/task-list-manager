@@ -30,16 +30,6 @@ const addingBtnStyle = {
 }
 
 export default class Nav {
-  _nav = document.createElement("nav");
-  /** @type {HTMLElement | null} */
-  _elementToAttachTo = null;
-  /** @type {null | (itemId: string) => void} */
-  _listItemClickedCallback = null;
-  /** @type {null | (itemId: string) => void} */
-  _removingListCallback = null;
-  /** @type {null | (itemId: string) => void} */
-  _addingListCallback = null;
-
   /**
    * 
    * @param {Array<List>} lists
@@ -48,6 +38,7 @@ export default class Nav {
    * @param {(itemId: string) => void} addingListCallback
    */
   constructor(lists, listItemCallback, removingListCallback, addingListCallback) {
+    this._nav = document.createElement("nav");
     this._createTasksLists(lists).forEach((list) => {
       this._nav.appendChild(list);
     });
@@ -60,48 +51,37 @@ export default class Nav {
 
   _createAddingButton() {
     const button = document.createElement("button");
-    button.textContent = "Create task list";
+    button.textContent = "Add new task";
     Object.assign(button.style, addingBtnStyle);
-    button.onclick = () => {
-      const itemBtn = this._createItemButton("New list");
-      const id = generateId();
-      itemBtn.onclick = () => {
-        if (this._listItemClickedCallback) {
-          this._listItemClickedCallback(id);
-        }
-      };
-      const removeBtn = this._createRemovingButton();
-      removeBtn.onclick = (e) => {
-        e.stopPropagation();
-        this._nav.removeChild(itemBtn);
-        if (this._removingListCallback) {
-          this._removingListCallback(id);
-        }
-      };
-      itemBtn.appendChild(removeBtn);
-      button.before(itemBtn);
-      if (this._addingListCallback) {
-        this._addingListCallback(id);
-      }
-    };
+    button.onclick = () => this._addingListCallback();
     return button;
   };
 
   /**
    * 
+   * @param {string} id 
    * @param {string} label 
    */
-  _createItemButton(label) {
+  _createItemButton(id, label) {
     const button = document.createElement("button");
     button.textContent = label;
     Object.assign(button.style, itemBtnStyle);
+    button.onclick = () => this._listItemClickedCallback(id);
     return button;
   };
 
-  _createRemovingButton() {
+  /**
+   * 
+   * @param {string} id 
+   */
+  _createRemovingButton(id) {
     const button = document.createElement("button");
     button.textContent = "remove";
     Object.assign(button.style, removeBtnStyle);
+    button.onclick = (e) => {
+      e.stopPropagation();
+      this._removingListCallback(id)
+    };
     return button;
   };
 
@@ -110,21 +90,9 @@ export default class Nav {
    * @param {Array<List>} lists 
    */
   _createTasksLists(lists) {
-    return lists.map((list) => {
-      const itemBtn = this._createItemButton(list.label);
-      itemBtn.onclick = () => {
-        if (this._listItemClickedCallback) {
-          this._listItemClickedCallback(list.id);
-        }
-      };
-      const removeBtn = this._createRemovingButton();
-      removeBtn.onclick = (e) => {
-        e.stopPropagation();
-        this._nav.removeChild(itemBtn);
-        if (this._removingListCallback) {
-          this._removingListCallback(list.id);
-        }
-      };
+    return lists.map(({id, label}) => {
+      const itemBtn = this._createItemButton(id, label);
+      const removeBtn = this._createRemovingButton(id);
       itemBtn.appendChild(removeBtn);
       return itemBtn;
     });
