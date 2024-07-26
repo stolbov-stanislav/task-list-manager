@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./modules/storage.js').Storage} Storage
+ * @typedef {import('./storage.js').Storage} Storage
  */
 
 const rerenderEvent = new Event("rerender");
