@@ -2,6 +2,8 @@
  * @typedef {import('./storage.js').Storage} Storage
  */
 
+import { generateId } from './utils.js';
+
 const rerenderEvent = new Event("rerender");
 export const rerenderEventType = rerenderEvent.type;
 
@@ -58,6 +60,24 @@ export const onTaskLabelChanged = (id, value, storage, callback) => {
  */
 export const onTaskRemoved = (id, storage, callback) => {
   storage.removeItem(id);
+  window.dispatchEvent(rerenderEvent);
+  callback();
+};
+
+/**
+ * 
+ * @param {string} parentId 
+ * @param {Storage} storage 
+ * @param {() => void} callback 
+ */
+export const onTaskAdded = (parentId, storage, callback) => {
+  const id = generateId();
+  storage.setItem(id, JSON.stringify({
+    id,
+    label: "New task",
+    isDone: false,
+    parentId,
+  }));
   window.dispatchEvent(rerenderEvent);
   callback();
 };
