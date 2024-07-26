@@ -9,6 +9,8 @@ const navStyle = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
+  height: "100%",
+  overflow: "auto",
 }
 
 const itemBtnStyle = {
