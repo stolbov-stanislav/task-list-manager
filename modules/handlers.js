@@ -104,3 +104,18 @@ export const onListRemoved = (id, storage, callback) => {
   window.dispatchEvent(rerenderEvent);
   callback();
 };
+
+/**
+ * 
+ * @param {Storage} storage 
+ * @param {() => void} callback 
+ */
+export const onListAdded = (storage, callback) => {
+  const id = generateId();
+  storage.setItem(id, JSON.stringify({
+    id,
+    label: "New list",
+  }));
+  window.dispatchEvent(rerenderEvent);
+  callback();
+};
