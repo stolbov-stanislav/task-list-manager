@@ -34,3 +34,18 @@ export const onIsDoneChanged = (id, isChecked, storage, callback) => {
   window.dispatchEvent(rerenderEvent);
   callback();
 };
+
+/**
+ * 
+ * @param {string} id 
+ * @param {string} value 
+ * @param {Storage} storage 
+ * @param {() => void} callback 
+ */
+export const onTaskLabelChanged = (id, value, storage, callback) => {
+  const task = JSON.parse(storage.getItem(id));
+  task.label = value;
+  storage.setItem(id, JSON.stringify(task));
+  window.dispatchEvent(rerenderEvent);
+  callback();
+};

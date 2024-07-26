@@ -12,6 +12,7 @@ import {
   rerenderEventType,
   onTitleChanged,
   onIsDoneChanged,
+  onTaskLabelChanged,
 } from "./modules/handlers.js";
 
 fillStorageWithInitialData();
@@ -33,11 +34,9 @@ const renderTaskListManager = (listId) => {
   const taskList = new TaskList(
     getItemById(listId),
     getTasksByParentIdFromStorage(listId),
-
     (id, value) => onTitleChanged(id, value, storage, () => renderTaskListManager(listId)),
-
     (id, isChecked) => onIsDoneChanged(id, isChecked, storage, () => renderTaskListManager(listId)),
-    (id, value) => console.log("task label changed", id, value),
+    (id, value) => onTaskLabelChanged(id, value, storage, () => renderTaskListManager(listId)),
     (id) => console.log("removing task", id),
     () => console.log("adding task"),
   );
